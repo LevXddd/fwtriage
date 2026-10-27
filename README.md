@@ -12,8 +12,9 @@ fwtriage is my first step: a small tool that does the first check every firmware
 - **Entropy map**: measures how random each block of bytes is, to show which parts are text, code, or compressed/encrypted data
 
 ## How it will work
-flowchart...
+![How fwtriage works](docs/flowchart.png)
 
+   
 ## Status
 Work in progress. CS50P final project.
 
