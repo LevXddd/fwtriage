@@ -11,7 +11,7 @@ fwtriage is my first step: a small tool that does the first check every firmware
 - **Readable strings**: finds text hidden inside binary data, like versions, URLs and error messages
 - **Entropy map**: measures how random each block of bytes is, to show which parts are text, code, or compressed/encrypted data
 
-## How it will work
+## Flowchart
 ![How fwtriage works](docs/flowchart.png)
 
    
