@@ -1,8 +1,9 @@
 # fwtriage
-<A Python command-line tool that triages binary and firmware files: it shows their real file type, SHA-256 hash, readable strings and an entropy map.>
+A Python command-line tool that triages binary and firmware files: it shows their real file type, SHA-256 hash, readable strings and an entropy map.
 
 ## Why
-<2–3 sentences — you write>
+I have always been interested in reverse engineering, firmware and embedded security, and I see it as one of the most promising fields to learn. Device security is also becoming a legal requirement: since September 2026, the EU Cyber Resilience Act requires makers of connected devices to report actively exploited vulnerabilities, with full rules from December 2027. 
+fwtriage is my first step: a small tool that does the first check every firmware analysis starts with.
 
 ## Planned features
 - **File type detection**: identifies the format from the first bytes (magic bytes), even if the file name is wrong
@@ -11,7 +12,7 @@
 - **Entropy map**: measures how random each block of bytes is, to show which parts are text, code, or compressed/encrypted data
 
 ## How it will work
-<flowchart — you write the steps first>
+flowchart...
 
 ## Status
 Work in progress. CS50P final project.
