@@ -46,7 +46,13 @@ def main():
         for letter in extract_strings(data):
             print(" ", letter)
         print(f"Entropy of the file: {calculate_the_entropy(data):.2f} ")
-        
+        check = entropy_map(data)
+        if not check:
+            print('There are not suspicious chunks')
+        else:
+            print(f"Suspicious chunks with high entropy: ")
+            for key, value in check.items():
+                print(f" Offset: {key}, Entropy: {value:.3f}")        
 
 def calculate_the_entropy(name):
     probability_sum = 0   
@@ -66,7 +72,14 @@ def calculate_the_entropy(name):
         total += -1 * p * log(p, 2)
     return total
 
-
+def  entropy_map(name):
+    suspicious = {}
+    for key in range(0, len(name), 256):
+        chunk = name[key: key + 256]
+        score = calculate_the_entropy(chunk)
+        if score >= 7:
+            suspicious[key] = score
+    return suspicious
 
 
 

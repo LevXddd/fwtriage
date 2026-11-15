@@ -1,6 +1,6 @@
-from project import detect_filetype
-from project import detect_filetype, extract_strings
-from project import detect_filetype, extract_strings, calculate_the_entropy
+
+from project import detect_filetype, extract_strings, calculate_the_entropy, entropy_map
+import os
 
 
 def test_detect_filetype():
@@ -19,3 +19,9 @@ def test_calculate_the_entropy():
     assert calculate_the_entropy(b"AAAA") == 0.0
     assert calculate_the_entropy(b"AABB") == 1.0
     assert calculate_the_entropy(b"") == 0.0
+
+
+
+def test_entropy_map():
+    assert entropy_map(os.urandom(512)) != {}   # random bytes ≈ 8.0 → flagged
+    assert entropy_map(b"A" * 512) == {}         # all same byte → nothing flagged
