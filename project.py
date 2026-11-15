@@ -1,5 +1,5 @@
 import sys
-
+from math import log
 SIGNATURES = {
 
     b"\x7FELF":      "ELF executable",
@@ -34,20 +34,42 @@ def extract_strings(data, min_len = 4):
 
 def main():
     try:
-        if len(sys.argv) < 2:
-            print("Incorrect")
+        if len(sys.argv) < 2 or len(sys.argv) > 2:
+           sys.exit("Incorrect")
         with open(sys.argv[1], "rb") as file:
             data = file.read()
     except FileNotFoundError:
         sys.exit("File is not found")
-    except IndexError:
-        sys.exit("Please provide a file")
     else: 
         print(f"File type: {detect_filetype(data)}")
         print("Extracted strings:")
         for letter in extract_strings(data):
             print(" ", letter)
+        print(f"Entropy of the file: {calculate_the_entropy(data):.2f} ")
         
+
+def calculate_the_entropy(name):
+    probability_sum = 0   
+     # first of all, we have formula like - sigma p(x) * log 2 p(x)
+    # x is just a variable, like if we have AAAA, then x will be A, but we should transfer this to a number.
+    p = 0
+    total = 0
+    counts = {}
+    for letter in name:
+        if letter in counts:
+            counts[letter] += 1 # we are just adding value
+        else:
+            counts[letter] = 1
+
+    for i in counts:
+        p = counts[i] / len(name)
+        total += -1 * p * log(p, 2)
+    return total
+
+
+
+
+
 
 
 
@@ -55,6 +77,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+   
+
    
 
 
