@@ -1,7 +1,5 @@
 # fwtriage
 
-#### Video Demo: https://youtu.be/Uhfc3I0voco?si=BWvkrrl3FglVA573
-
 #### Description:
 
 fwtriage is a command-line tool for taking a first look at an unknown binary file - a step security analysts call triage. I chose this project because I was always interested in Cybersecurity, which from my perspective of view, is important for every individual. 
