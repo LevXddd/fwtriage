@@ -1,5 +1,6 @@
 import sys
 from math import log
+
 SIGNATURES = {
 
     b"\x7FELF":      "ELF executable",
@@ -10,6 +11,35 @@ SIGNATURES = {
     b"\xff\xd8\xff": "JPEG image", 
         }
     
+
+
+def main():
+    try:
+        if len(sys.argv) != 2:
+           sys.exit("Incorrect")
+        with open(sys.argv[1], "rb") as file:
+            data = file.read()
+    except FileNotFoundError:
+        sys.exit("File is not found")
+    else: 
+        print(f"File type: {detect_filetype(data)}")
+        print("Extracted strings:")
+        for letter in extract_strings(data):
+            print(" ", letter)
+        print(f"Entropy of the file: {calculate_the_entropy(data):.2f} ")
+        check = entropy_map(data)
+        if not check:
+            print('There are no suspicious chunks')
+        else:
+            print(f"Suspicious chunks with high entropy: ")
+            for key, value in check.items():
+                print(f" Offset: {key}, Entropy: {value:.3f}")
+        listing = carve_embedded(data)       
+        if not listing:
+            print("None")
+        for key, value in listing:
+            print(f"Position: {key}, Name: {value}")
+
 def detect_filetype(data):
     for signature, name in SIGNATURES.items():
         if data.startswith(signature):
@@ -32,28 +62,6 @@ def extract_strings(data, min_len = 4):
     return results
 
 
-def main():
-    try:
-        if len(sys.argv) < 2 or len(sys.argv) > 2:
-           sys.exit("Incorrect")
-        with open(sys.argv[1], "rb") as file:
-            data = file.read()
-    except FileNotFoundError:
-        sys.exit("File is not found")
-    else: 
-        print(f"File type: {detect_filetype(data)}")
-        print("Extracted strings:")
-        for letter in extract_strings(data):
-            print(" ", letter)
-        print(f"Entropy of the file: {calculate_the_entropy(data):.2f} ")
-        check = entropy_map(data)
-        if not check:
-            print('There are not suspicious chunks')
-        else:
-            print(f"Suspicious chunks with high entropy: ")
-            for key, value in check.items():
-                print(f" Offset: {key}, Entropy: {value:.3f}")        
-
 def calculate_the_entropy(name):
     probability_sum = 0   
      # first of all, we have formula like - sigma p(x) * log 2 p(x)
@@ -72,7 +80,8 @@ def calculate_the_entropy(name):
         total += -1 * p * log(p, 2)
     return total
 
-def  entropy_map(name):
+
+def entropy_map(name):
     suspicious = {}
     for key in range(0, len(name), 256):
         chunk = name[key: key + 256]
@@ -81,11 +90,18 @@ def  entropy_map(name):
             suspicious[key] = score
     return suspicious
 
-
-
-
-
-
+def carve_embedded(name):
+    results = []
+    for key, value in SIGNATURES.items():
+        starting_point = 0 
+        position = name.find(key, starting_point)
+        while position != -1:
+            results.append((position, value))
+             # why do we use two parentheses? because we need a tuple.
+            starting_point = position + 1
+            position = name.find(key, starting_point)
+    return results
+   
 
 
 if __name__ == "__main__":
