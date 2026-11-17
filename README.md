@@ -19,7 +19,8 @@
 </p>
 
 <p align="center">
-  <img src="assets/demo.gif" alt="fwtriage running in a terminal" width="800">
+  <img src="<img width="713" height="851" alt="demo-ezgif com-cut" src="https://github.com/user-attachments/assets/279ea1c3-8b3e-4313-a8e8-3978ab536840" />
+" alt="fwtriage running in a terminal" width="800">
 </p>
 
 ## Overview
