@@ -18,13 +18,8 @@
   <a href="docs/README.md">Documentation</a>
 </p>
 
-
-
-
-
 <p align="center">
-  <img src="assets/demo.gif![Uploading demo-ezgif.com-cut.gif…]()
-" alt="fwtriage running in a terminal" width="800">
+  <img src="assets/demo.gif" alt="fwtriage running in a terminal" width="800">
 </p>
 
 ## Overview
@@ -100,4 +95,3 @@ For real-world analysis, consider established tools such as [`binwalk`](https://
 ## License
 
 This project is licensed under the MIT License. See [`LICENSE`](LICENSE) for details.
-
