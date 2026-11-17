@@ -18,12 +18,12 @@
   <a href="docs/README.md">Documentation</a>
 </p>
 
-<table>
+<table width="100%">
   <tr>
-    <td width="55%" align="center" valign="top">
-      <img src="assets/demo.gif" alt="fwtriage analyzing a binary file in a terminal" width="500">
+    <td width="45%" align="center" valign="middle">
+      <img src="assets/demo.gif" alt="fwtriage analyzing a binary file in a terminal" width="100%">
     </td>
-    <td width="45%" valign="middle">
+    <td width="55%" valign="middle">
       <h2>Inspect unknown binaries</h2>
       <p>Run several basic file-analysis techniques with one command.</p>
       <ul>
@@ -32,7 +32,7 @@
         <li>Analyze file and chunk entropy</li>
         <li>Scan for embedded-file signatures</li>
       </ul>
-      <pre><code>python project.py samples/combined.bin</code></pre>
+      <p><code>python project.py samples/combined.bin</code></p>
     </td>
   </tr>
 </table>
