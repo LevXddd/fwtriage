@@ -1,39 +1,98 @@
-# fwtriage
+<h1 align="center">fwtriage</h1>
 
-#### Description:
+<p align="center">
+  A command-line tool for inspecting unknown binary files.
+</p>
 
-fwtriage is a command-line tool for taking a first look at an unknown binary file - a step security analysts call triage. I chose this project because I was always interested in Cybersecurity, which from my perspective of view, is important for every individual. 
-Firmware and embedded security is a major field today: analysts are regularly handed files with no documentation - a router's firmware, a device memory dump, a suspicious sample - and they must work out what the file contains without running it, because running an unknown binary is dangerous. fwtriage cannot decompile code, but it answers the fast questions: what type of file this is, what readable text is hidden inside, how random (and therefore possibly encrypted or compressed) its contents are, and whether other files are buried within it. 
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.12+-blue" alt="Python 3.12+">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License">
+  <img src="https://img.shields.io/badge/CS50P-final%20project-red" alt="CS50P final project">
+</p>
 
-You run it from the terminal with a single argument:
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#limitations">Limitations</a> •
+  <a href="docs/README.md">Documentation</a>
+</p>
 
-    python project.py <some_file>
+<p align="center">
+  <img src="assets/demo.gif" alt="fwtriage running in a terminal" width="800">
+</p>
 
-After this, it prints a short report - the detected file type, the readable strings that it did find, the overall entropy of the file, any high-entropy regions, and any embedded files it located
+## Overview
 
+`fwtriage` is a learning project for quickly inspecting unfamiliar binary files. It brings together several basic analysis techniques in one command: file signature detection, readable-string extraction, entropy analysis, and embedded-file signature scanning.
 
-The project is built from five functions plus a main() that ties them together. 
+The project was built to explore how tools such as `binwalk` work by implementing some of the underlying ideas.
 
+## Features
 
-**detect_filetype** reads the first bytes of the file and compares them against a table of known *magic numbers* - fixed byte sequences that every file of a format begins with (for example, every PDF starts with `%PDF`, and every PNG with `\x89PNG`). If one matches it returns the format name. Otherwise it returns `"unknown"`.
+- **File type detection** — checks the file's magic bytes against known signatures.
+- **String extraction** — finds readable ASCII sequences in the file.
+- **Entropy analysis** — calculates entropy for the whole file and for 256-byte chunks to help highlight regions that may be compressed or encrypted.
+- **Embedded-file scanning** — searches for known file signatures inside the input file.
 
+## Installation
 
-**extract_strings** pulls human-readable text out of the binary. It walks through the bytes and collects runs of printable ASCII characters - the range 32 to 126, which covers the symbols people actually read and type. Only runs of at least four characters are kept, which filters out random coincidences and leaves real content such as file paths, URLs and error messages.
+```bash
+git clone https://github.com/LevXddd/fwtriage.git
+cd fwtriage
 
-**calculate_the_entropy** measures how random the file's bytes are, using Shannon entropy:
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-$$H = -\sum_{x} p(x)\,\log_2 p(x)$$
+## Usage
 
-where `p(x)` is the probability of each byte value. The result runs from 0 (completely predictable) to 8 (completely random). Ordinary code scores around 6, while encrypted or compressed data scores close to 8.
+Analyze a file:
 
-**entropy_map** applies that measurement across the file in fixed windows of 256 bytes and flags every window scoring 7 or even higher. One number for a whole file hides a small encrypted region, but a window-by-window scan reveals exactly where it is.
+```bash
+python project.py /bin/ls
+```
 
-**carve_embedded** does the same kind of matching as detect_filetype, but instead of checking only the start, it scans the whole file for magic numbers at every position. Each hit marks the start of a file hidden inside the main one.
+Try the included sample:
 
-#### Design decisions
+```bash
+python project.py samples/combined.bin
+```
 
-Carving only uses signatures of four bytes or more. This comes from probability: a short two-byte signature such as gzip's matches by pure chance roughly once every 65,536 positions, which means hundreds of false hits in a large file, while a four-byte signature almost never matches by accident. In the future I plan to rewrite the entropy loop in C to make it much faster on large files, keeping the Python version as a fallback.
+The tool reports the detected file type, extracted strings, entropy information, and any recognized signatures. The exact results depend on the input file.
 
-#### Limitations
+## How it works
 
-The tool cannot determine the exact end of an embedded file, so carving reports where files begin but not their precise size. It is a triage tool, not a full extractor or decompiler.
+`fwtriage` reads the input file and applies several analyses to its bytes:
+
+1. It checks the beginning of the file for known file signatures.
+2. It extracts runs of printable ASCII bytes.
+3. It calculates Shannon entropy for the whole file and in 256-byte chunks.
+4. It scans for known signatures that may indicate embedded files.
+
+See the [documentation](docs/README.md) for explanations of the individual functions.
+
+## Limitations
+
+This is an educational project, not a replacement for mature forensic tools.
+
+- The entropy analysis uses fixed 256-byte chunks. Small chunks can make the threshold noisy, so a score near the current threshold should not be treated as proof of encryption.
+- Embedded-file signatures are detected, but the files are not extracted.
+- Short signatures can match by coincidence, so a match alone does not confirm that a valid embedded file is present.
+
+## Roadmap
+
+- [ ] Add SHA-256 hashing
+- [ ] Add an entropy visualization
+- [ ] Extract carved files to disk
+- [ ] Revisit the entropy thresholds and chunking strategy
+
+## Alternatives
+
+For real-world analysis, consider established tools such as [`binwalk`](https://github.com/ReFirmLabs/binwalk), `file`, and `strings`. `fwtriage` is primarily a project for learning how some of these techniques work.
+
+## License
+
+This project is licensed under the MIT License. See [`LICENSE`](LICENSE) for details.
+
