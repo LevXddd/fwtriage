@@ -18,9 +18,30 @@
   <a href="docs/README.md">Documentation</a>
 </p>
 
-<p align="center">
-  <img src="assets/demo.gif" alt="fwtriage analyzing a binary file in a terminal" width="360">
-</p>
+<table>
+  <tr>
+    <td width="38%" align="center" valign="top">
+      <img src="assets/demo.gif" alt="fwtriage analyzing a binary file in a terminal" width="300">
+    </td>
+    <td width="62%" valign="middle">
+      <h2>Inspect unknown binaries</h2>
+      <p>
+        fwtriage brings several basic file-analysis techniques together in one command.
+      </p>
+      <ul>
+        <li>Detects file types from their signatures</li>
+        <li>Extracts readable strings</li>
+        <li>Analyzes file and chunk entropy</li>
+        <li>Scans for embedded-file signatures</li>
+      </ul>
+      <p><strong>Try it:</strong></p>
+      <pre><code>python project.py samples/combined.bin</code></pre>
+    </td>
+  </tr>
+</table>
+
+
+
 
 ## Overview
 
