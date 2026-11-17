@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/demo.gif" alt="fwtriage analyzing a sample file" width="650">
+  <img src="assets/demo_readme.gif" alt="fwtriage running in a terminal" width="650">
 </p>
 
 ## Overview
